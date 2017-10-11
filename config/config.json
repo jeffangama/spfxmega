@@ -1,0 +1,38 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "spfx-toastr-application-customizer": {
+      "components": [{
+        "entrypoint": "./lib/extensions/spfxToastr/SpfxToastrApplicationCustomizer.js",
+        "manifest": "./src/extensions/spfxToastr/SpfxToastrApplicationCustomizer.manifest.json"
+      }]
+    }
+  },
+  "externals": {
+    "jquery": "https://code.jquery.com/jquery-2.2.4.min.js",
+    "toastr": "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js",
+    "sp-init": {
+      "path": "https://samavangarde.sharepoint.com/sites/devjeff/_layouts/15/init.js",
+      "globalName": "$_global_init"
+    },
+    "microsoft-ajax": {
+      "path": "https://samavangarde.sharepoint.com/sites/devjeff/_layouts/15/MicrosoftAjax.js",
+      "globalName": "Sys",
+      "globalDependencies": ["sp-init"]
+    },
+    "sp-runtime": {
+      "path": "https://samavangarde.sharepoint.com/sites/devjeff/_layouts/15/SP.Runtime.js",
+      "globalName": "SP",
+      "globalDependencies": ["microsoft-ajax"]
+    },
+    "sharepoint": {
+      "path": "https://samavangarde.sharepoint.com/sites/devjeff/_layouts/15/SP.js",
+      "globalName": "SP",
+      "globalDependencies": ["sp-runtime"]
+    }
+  },
+  "localizedResources": {
+    "SpfxToastrApplicationCustomizerStrings": "lib/extensions/spfxToastr/loc/{locale}.js"
+  }
+}
