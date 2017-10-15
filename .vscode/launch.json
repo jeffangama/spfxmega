@@ -1,0 +1,15 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "https://samavangarde.sharepoint.com/sites/devjeff/SitePages/Home.aspx?loadSPFX=true&debugManifestsFile=https://localhost:4321/temp/manifests.js&customActions={%22a861c815-e425-416d-9520-04bcdf557e27%22:{%22location%22:%22ClientSideExtension.ApplicationCustomizer%22}}",
+            "webRoot": "${workspaceRoot}"
+        }
+    ]
+}

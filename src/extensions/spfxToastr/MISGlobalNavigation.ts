@@ -240,23 +240,12 @@ export class MISGlobalNavigation {
     }
 
     //Add link to Home page
-    var menuInnerHtml = "<div id='homeBtnWebcenter'>" +
-      "<a href='" + this.viewModelObj.siteUrl + "' class='mis-tooltip-topnav s4-notdlg'>" +
-      "<p>" + this.viewModelObj.homeBtnTitle + "</p>" +
-      "<img class='webcenter' src='" + this.viewModelObj.siteUrl + "/Style Library/MIS.GlobalNavigation/images/home.png' height='30' alt='Webcenter'>" +
-      "<span style='display: none !important'>" +
-      "<img class='callout' src='" + this.viewModelObj.siteUrl + "/Style Library/MIS.GlobalNavigation/images/callout.gif' />" +
-      "Page d'accueil." +
-      "</span>" +
-      "</a></div>";
+
 
     //Add link to Home page
-    menuInnerHtml += "<div id='homeBtn' class='s4-notdlg'>" +
-      "<img class='HomeBtn' src='" + this.viewModelObj.siteUrl + "/Style Library/MIS.GlobalNavigation/images/menu.png' height='30'>" +
-      "<p>Menu</p>" +
+     var menuInnerHtml =
       "<div id='nav-container'>" +
       this.viewModelObj.htmlStr +
-      "</div>" +
       "</div>";
 
     //Insert icon on the left of the SharePoint text (Top left corner) + all menu html
@@ -287,7 +276,7 @@ export class MISGlobalNavigation {
     $("#MEGAMENU").on('click', function () {
       $("#MEGAMENU").toggleClass("mis-on");
       $('#nav-container').toggleClass("mis-on");
-      $("nav ul").toggleClass('mis-hidden');
+      //$("nav ul").toggleClass('mis-hidden');
     });
 
     $("#MEGAMENU img")
@@ -357,8 +346,6 @@ export class MISGlobalNavigation {
     }
   };
 
-
-
   /**
    * Initialisation to get information from the TermStore
    *
@@ -376,12 +363,11 @@ export class MISGlobalNavigation {
     //if (!this.viewModelObj.globalMenuItems) {
     console.log("no terms loading it");
 
-    debugger;
     this.buildTermsModel(spcontext, termStoreName, termSetId).then(() => {
       //to do rendre asynchrone
-      setTimeout(()=>{this.displayMenu();}, 2000);
+      //setTimeout(()=>{}, 2000);
+      this.displayMenu();
     })
-
 
     //ko.applyBindings(this.viewModelObj);
     // SP.UI.Notify.removeNotification(nid);
@@ -396,8 +382,7 @@ export class MISGlobalNavigation {
     //}
   };
 
-
-  private buildTermsModel(spcontext: any, termStoreName: any, termSetId: any) {
+  private buildTermsModel(spcontext: any, termStoreName: any, termSetId: any): Promise<void> {
     //SP.SOD.executeOrDelayUntilScriptLoaded(function () {
     // 'use strict';
     // var nid = SP.UI.Notify.addNotification("<img src='/_layouts/15/images/loadingcirclests16.gif?rev=23' style='vertical-align:bottom; display:inline-block; margin-" + (document.documentElement.dir == "rtl" ? "left" : "right") + ":2px;' />&nbsp;<span style='vertical-align:top;'>Loading navigation...</span>", false);
@@ -415,6 +400,7 @@ export class MISGlobalNavigation {
       //context.executeQueryAsync(function name(sender, args) {
       context.executeQueryAsync(createDelegate(this, function (sender, args) {
         var termsEnumerator = terms.getEnumerator();
+        resolve();
         while (termsEnumerator.moveNext()) {
           var currentTerm = termsEnumerator.get_current();
           var termIsRoot = currentTerm.get_isRoot();
@@ -433,7 +419,7 @@ export class MISGlobalNavigation {
         //Call the logical function to display the menu
       }));
 
-      resolve();
+
     });
   }
 }
