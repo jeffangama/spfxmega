@@ -26,7 +26,7 @@ require('microsoft-ajax');
 require('sp-runtime');
 require('sharepoint');
 
- SPComponentLoader.loadCss('https://samavangarde.sharepoint.com/sites/devjeff/Style%20Library/MIS.GlobalNavigation/css/MIS.GlobalNavigation.css')
+SPComponentLoader.loadCss('https://samavangarde.sharepoint.com/sites/devjeff/Style%20Library/MIS.GlobalNavigation/css/MIS.GlobalNavigationModern.css')
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
  * it will be deserialized into the BaseExtension.properties object.
@@ -70,9 +70,7 @@ export default class SpfxToastrApplicationCustomizer
 
   private buildMegaMenu(): void {
 
-    console.log("v1.5");
-    $('.ms-bgColor-themeDark').text("tete");
-    $('#suiteBarLeft .ms-core-brandingText').remove();
+    //$('.ms-bgColor-themeDark').text("tete");
 
     $(document).ready(function () {
       //alert("test");
@@ -80,21 +78,21 @@ export default class SpfxToastrApplicationCustomizer
 
     let instanceMis: MISMain = new MISMain(this.context);
 
-    const context: SP.ClientContext = new SP.ClientContext(this.context.pageContext.web.absoluteUrl);
-    const web: SP.Web = context.get_web();
-    context.load(web);
-    context.executeQueryAsync(function name(sender, args) {
-      this.webpartTitle = web.get_title();
-      console.log(web.get_description());
-      let siteContent: string = `<div>
-                                 <h2>Title: ${web.get_title()}</h2>
-                                 <span>Description: ${web.get_description()}<span>
-                               </div>`;
-      //htmlContext.domElement.querySelector("#siteContent").innerHTML =siteContent;
-    },
-      function (sender, args) {
-        console.log(args.get_message());
-      });
+    // const context: SP.ClientContext = new SP.ClientContext(this.context.pageContext.web.absoluteUrl);
+    // const web: SP.Web = context.get_web();
+    // context.load(web);
+    // context.executeQueryAsync(function name(sender, args) {
+    //   //this.webpartTitle = web.get_title();
+    //   //console.log(web.get_description());
+    //   // let siteContent: string = `<div>
+    //   //                            <h2>Title: ${web.get_title()}</h2>
+    //   //                            <span>Description: ${web.get_description()}<span>
+    //   //                          </div>`;
+    //   //htmlContext.domElement.querySelector("#siteContent").innerHTML =siteContent;
+    // },
+    //   function (sender, args) {
+    //     console.log(args.get_message());
+    //   });
 
   }
   private _renderPlaceHolders(): void {
@@ -123,14 +121,16 @@ export default class SpfxToastrApplicationCustomizer
         }
 
         if (this._topPlaceholder.domElement) {
-          this._topPlaceholder.domElement.innerHTML = `
-        <div id="MEGAMENU" class="">
-          <div class="ms-bgColor-themeDark ms-fontColor-white ">
-            This is my place holder
+          this._topPlaceholder.domElement.innerHTML = `<div id="MEGAMENU" class=""></div>`;
 
-            // <i class="ms-Icon ms-Icon--Info" aria-hidden="true"></i>
-          </div>
-        </div>`;
+          // this._topPlaceholder.domElement.innerHTML = `
+          // <div id="MEGAMENU" class="">
+          //   <div class="ms-bgColor-themeDark ms-fontColor-white ">
+          //     This is my place holder
+
+          //     // <i class="ms-Icon ms-Icon--Info" aria-hidden="true"></i>
+          //   </div>
+          // </div>`;
         }
       }
     }

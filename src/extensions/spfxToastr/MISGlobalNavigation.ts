@@ -24,8 +24,6 @@ export class MISGlobalNavigation {
 
   constructor() {
     this.viewModelObj = new ViewModel();
-    this.viewModelObj.globalMenuItems = new Array<any>();
-    this.viewModelObj.treeNav = new Array<any>();
     sessionStorage.clear();
   }
 
@@ -43,13 +41,13 @@ export class MISGlobalNavigation {
 
     switch (nLevel) {
       case 0: //Top Level => Executive, Core Processes, Support or Social
-        this.viewModelObj.htmlStr += "<div class='separator-megamenu'></div>";
+        this.viewModelObj.htmlStr += "<div class='separator-megamenu ms-hidden'></div>";
         this.viewModelObj.htmlStr += "<div class='container-megamenu'>";
         //this.viewModelObj.htmlStr + "<a href='" + menuItem.url + "'>" + menuItem.name + "</a>";
         this.viewModelObj.htmlStr += "<p class='menu-level1'>" + menuItem.name;
         this.viewModelObj.htmlStr += "<img class='icon-level1' align='right' src='" + this.viewModelObj.siteUrl + "/Style Library/MIS.GlobalNavigation/images/icon-" + menuItem.name.replace(/[~#%&*:<>?/\{|}.]/g, "-") + ".png'></img>";
         this.viewModelObj.htmlStr += "</p>";
-        this.viewModelObj.htmlStr += "<ul class='subs' style='list-style: none;'>";
+        this.viewModelObj.htmlStr += "<ul class='subs ms-hidden' style='list-style: none;'>";
 
         for (var i = 0; i < nbChild; i++) {
           this.printTree(menuItem.children[i], nLevel + 1);
@@ -65,8 +63,8 @@ export class MISGlobalNavigation {
           this.viewModelObj.htmlStr += "<li><a href='" + menuItem.url + "' class='mis-tooltip'>" +
             menuItem.name +
             "<span>" +
-            "<img class='callout' src='" + this.viewModelObj.siteUrl + "/Style Library/MIS.GlobalNavigation/images/callout.gif' />" +
-            menuItem.description +
+            /*"<img class='callout' src='/Style Library/MIS.GlobalNavigation/images/callout.gif' />" +
+            menuItem.description +*/
             "</span>" +
             "</a>";
         }
@@ -80,6 +78,7 @@ export class MISGlobalNavigation {
       case 2: // sub-sub Menu
         this.viewModelObj.htmlStr += "<li>";
         if (menuItem.url === undefined) {
+          console.log("cas 2 display menuITem.name" + menuItem.name);
           this.viewModelObj.htmlStr += menuItem.name;
 
         }
@@ -107,7 +106,7 @@ export class MISGlobalNavigation {
       this.printTree(this.viewModelObj.treeNav[i], 0);
     }
     //Add the last separator in the menu
-    this.viewModelObj.htmlStr += "<div class='separator-megamenu'></div>";
+    this.viewModelObj.htmlStr += "<div class='separator-megamenu ms-hidden'></div>";
 
 
     //BackUp viewMenuModel in the sessionStorage
@@ -243,30 +242,15 @@ export class MISGlobalNavigation {
 
 
     //Add link to Home page
-     var menuInnerHtml =
+    var menuInnerHtml =
       "<div id='nav-container'>" +
       this.viewModelObj.htmlStr +
       "</div>";
+    console.log(menuInnerHtml);
 
     //Insert icon on the left of the SharePoint text (Top left corner) + all menu html
     $('#MEGAMENU').append(menuInnerHtml);
     this.applyNavigationEvent();
-    ////If SharePoint Online
-    //var isSPOnline = $("#O365_NavHeader div.o365cs-nav-leftAlign");
-    //if (isSPOnline.length > 0) {
-    //    var megaMenuHtml = "<div class='o365cs-nav-topItem o365cs-rsp-tw-hide o365cs-rsp-tn-hide' id='mis-GlobalNavigation' style='min-width: 155px;'></div>";
-    //    $("#O365_NavHeader div.o365cs-nav-leftAlign").prepend(megaMenuHtml);
-
-    //    //CSS Customisation
-    //    $("#homeBtn").css("left", "10px");
-    //    $("#homeBtn").css("top", "10px");
-    //    $("#homeBtnWebcenter").css("left", "75px");
-    //    $("#homeBtnWebcenter").css("top", "10px");
-
-    //}
-
-
-
   };
 
   //Event on the Menu
@@ -462,4 +446,10 @@ export class ViewModel {
   public isCentralResource: boolean;
   public siteUrl: any;
   public homeBtnTitle: any;
+
+  constructor() {
+    this.htmlStr = "";
+    this.globalMenuItems = new Array<any>();
+    this.treeNav = new Array<any>();
+  }
 }
