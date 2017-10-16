@@ -1,8 +1,10 @@
-
-function createDelegate(instance: any, method: any): any {
-  return function () {
-    return method.apply(instance, arguments);
+export class HelperCSOM {
+  public static createDelegate(instance: any, method: any): any {
+    return function () {
+      return method.apply(instance, arguments);
+    }
   }
+
 }
 
 export class MISGlobalNavigation {
@@ -10,9 +12,6 @@ export class MISGlobalNavigation {
   * Global Variable of the Menu
   *
   */
-
-  //var treeNav = [];
-  //var htmlStr = "<ul id='mis-nav' class='hidden'>";
 
   /**
   * Create the HTML dom of the menu - Only 3 level of menu
@@ -22,9 +21,10 @@ export class MISGlobalNavigation {
 
   public viewModelObj: ViewModel;
 
-  constructor() {
-    this.viewModelObj = new ViewModel();
-    sessionStorage.clear();
+  constructor(siteUrl:any) {
+    //debugger;
+    this.viewModelObj = new ViewModel(siteUrl);
+    //sessionStorage.clear();
   }
 
   /**
@@ -34,7 +34,7 @@ export class MISGlobalNavigation {
   * @param {int} nLevel - Level of the menu: 0, 1 or 2
   */
   private printTree(menuItem: MenuItem, nLevel) {
-    console.log("printTree()");
+    //console.log("printTree()");
     var nbChild = menuItem.children.length;
 
     switch (nLevel) {
@@ -76,7 +76,7 @@ export class MISGlobalNavigation {
       case 2: // sub-sub Menu
         this.viewModelObj.htmlStr += "<li>";
         if (menuItem.url === undefined) {
-          console.log("cas 2 display menuITem.name" + menuItem.name);
+          //console.log("cas 2 display menuITem.name" + menuItem.name);
           this.viewModelObj.htmlStr += menuItem.name;
 
         }
@@ -97,9 +97,9 @@ export class MISGlobalNavigation {
   *
   */
   private buildTree() {
-    console.log("buildTree()");
+    //console.log("buildTree()");
     this.treeFromArray2(this.viewModelObj.globalMenuItems);//Load the treeNav
-    console.log("entries in globalMenuItems  " + this.viewModelObj.globalMenuItems.length)
+    //console.log("entries in globalMenuItems  " + this.viewModelObj.globalMenuItems.length)
     for (var i = 0; i < this.viewModelObj.treeNav.length; i++) {
       this.printTree(this.viewModelObj.treeNav[i], 0);
     }
@@ -107,6 +107,7 @@ export class MISGlobalNavigation {
     this.viewModelObj.htmlStr += "<div class='separator-megamenu mis-hidden'></div>";
 
     //BackUp viewMenuModel in the sessionStorage
+    //debugger;
     var viewMenuModel_json = JSON.stringify(this.viewModelObj);
     sessionStorage.setItem("viewMenuModel", viewMenuModel_json);
   };
@@ -116,7 +117,7 @@ export class MISGlobalNavigation {
   *
   */
   private treeFromArray(list, idAttr, parentAttr, childrenAttr) {
-    console.log("treeFromArray()");
+    //console.log("treeFromArray()");
     if (!idAttr) idAttr = '_id';
     if (!parentAttr) parentAttr = 'sonOf';
     if (!childrenAttr) childrenAttr = 'children';
@@ -142,7 +143,7 @@ export class MISGlobalNavigation {
   };
 
   private treeFromArray2(list) {
-    console.log("treeFromArray2()");
+    //console.log("treeFromArray2()");
     var idAttr = '_id';
     var parentAttr = 'sonOf';
     var childrenAttr = 'children';
@@ -175,7 +176,7 @@ export class MISGlobalNavigation {
    */
 
   private sortTermsFromTree(tree) {
-    console.log("sortTermsFromTree()");
+    //console.log("sortTermsFromTree()");
     // Check to see if the get_customSortOrder function is defined. If the term is actually a term collection,
     // there is nothing to sort.
     if (tree.children.length && tree.customSortOrder) {
@@ -228,7 +229,7 @@ export class MISGlobalNavigation {
   *
   */
   private displayMenu() {
-    console.log("displayMenu called");
+    //console.log("displayMenu called");
     ////var homeBtnTitle, homeBtnUrl, isCentralResource;
 
     if (!sessionStorage.viewMenuModel) {
@@ -243,9 +244,10 @@ export class MISGlobalNavigation {
       "<div id='nav-container'>" +
       this.viewModelObj.htmlStr +
       "</div>";
-    console.log(menuInnerHtml);
+    //console.log(menuInnerHtml);
 
     //Insert icon on the left of the SharePoint text (Top left corner) + all menu html
+    //debugger;
     $('#MEGAMENU').append(menuInnerHtml);
     this.applyNavigationEvent();
   };
@@ -283,6 +285,7 @@ export class MISGlobalNavigation {
     //on hover menu level, show the menu, on hover off, hide the menu
     $("#nav-container").hover(function () {
       hiddenMenu.removeClass("mis-hidden");
+      $("#nav-container").css('cursor', 'pointer');
     }, function () {
       hiddenMenu.addClass("mis-hidden");
     });
@@ -314,6 +317,8 @@ export class MISGlobalNavigation {
    *
    */
   private loadSessionStorage(spcontext: any) {
+
+    //debugger;
     if (typeof (Storage) !== "undefined") {
       // Code for localStorage/sessionStorage.
       if (sessionStorage.viewMenuModel) {
@@ -324,6 +329,7 @@ export class MISGlobalNavigation {
         this.viewModelObj.isCentralResource = (sessionStorage.getItem("isCentralResource") == "true") ? true : false;
       }
       if (sessionStorage.homeBtnUrl) {
+
         if (this.viewModelObj.isCentralResource) {
           this.viewModelObj.siteUrl = sessionStorage.getItem("homeBtnUrl");
         }
@@ -338,7 +344,7 @@ export class MISGlobalNavigation {
     } else {
       // Sorry! No Web Storage support..
       if (typeof console === "object") {
-        console.log("Sorry! No Web Storage support..");
+        //console.log("Sorry! No Web Storage support..");
       }
     }
   };
@@ -350,7 +356,7 @@ export class MISGlobalNavigation {
    * @param {object} callback - Callback function to call upon completion and pass termset into
    */
   public init(spcontext, termStoreName, termSetId) {
-    console.log("init called");
+    //console.log("init called");
     //Load sessionStorage
 
 
@@ -358,7 +364,7 @@ export class MISGlobalNavigation {
 
     //Load all terms  if not already done.
     //if (!this.viewModelObj.globalMenuItems) {
-    console.log("no terms loading it");
+    //console.log("no terms loading it");
 
     this.buildTermsModel(spcontext, termStoreName, termSetId).then(() => {
       //to do rendre asynchrone
@@ -369,7 +375,7 @@ export class MISGlobalNavigation {
     //ko.applyBindings(this.viewModelObj);
     // SP.UI.Notify.removeNotification(nid);
     // }), Function.createDelegate(this, function (sender, args) {
-    //    console.log('The following error has occured while loading global navigation: ' + args.get_message());
+    //    //console.log('The following error has occured while loading global navigation: ' + args.get_message());
     //  }));
     // }));
     //  }, 'core.js');
@@ -395,7 +401,7 @@ export class MISGlobalNavigation {
       var terms = termSet.getAllTerms();
       context.load(terms);
       //context.executeQueryAsync(function name(sender, args) {
-      context.executeQueryAsync(createDelegate(this, function (sender, args) {
+      context.executeQueryAsync(HelperCSOM.createDelegate(this, function (sender, args) {
         var termsEnumerator = terms.getEnumerator();
         resolve();
         while (termsEnumerator.moveNext()) {
@@ -409,10 +415,10 @@ export class MISGlobalNavigation {
             termParentName, //currentTerm.get_localCustomProperties()['sonOf']//sonOf
             currentTerm.get_id().toString(), //guid of the term
             currentTerm.get_localCustomProperties()['description']));
-          console.log("Push in globalMenuItems " + currentTerm.get_name());
+          //console.log("Push in globalMenuItems " + currentTerm.get_name());
           // }
         }
-        console.log("GlobalMenuItems" + globalThis.viewModelObj.globalMenuItems.length);
+        //console.log("GlobalMenuItems" + globalThis.viewModelObj.globalMenuItems.length);
         //Call the logical function to display the menu
       }));
 
@@ -460,9 +466,10 @@ export class ViewModel {
   public siteUrl: any;
   public homeBtnTitle: any;
 
-  constructor() {
+  constructor(siteUrl:any) {
     this.htmlStr = "<ul id='mis-nav'>";
     this.globalMenuItems = new Array<any>();
     this.treeNav = new Array<any>();
+    this.siteUrl = siteUrl;
   }
 }

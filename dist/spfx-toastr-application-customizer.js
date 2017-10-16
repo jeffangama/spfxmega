@@ -1,4 +1,4 @@
-define("a861c815-e425-416d-9520-04bcdf557e27_0.0.1", ["@microsoft/decorators","@microsoft/sp-core-library","@microsoft/sp-application-base","@microsoft/sp-loader","jquery","sp-init","microsoft-ajax","sp-runtime","sharepoint"], function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_11__) { return /******/ (function(modules) { // webpackBootstrap
+define("a861c815-e425-416d-9520-04bcdf557e27_0.0.1", ["@microsoft/decorators","@microsoft/sp-application-base","@microsoft/sp-loader","jquery"], function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_6__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -87,17 +87,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var decorators_1 = __webpack_require__(1);
-var sp_core_library_1 = __webpack_require__(2);
-var sp_application_base_1 = __webpack_require__(3);
+var sp_application_base_1 = __webpack_require__(2);
 //Needed to reference external CSS files
-var sp_loader_1 = __webpack_require__(4);
-var MISMain_1 = __webpack_require__(5);
-var $ = __webpack_require__(7);
+var sp_loader_1 = __webpack_require__(3);
+var MISMain_1 = __webpack_require__(4);
+var $ = __webpack_require__(6);
 var LOG_SOURCE = 'SpfxToastrApplicationCustomizer';
-__webpack_require__(8);
-__webpack_require__(9);
-__webpack_require__(10);
-__webpack_require__(11);
+// require('sp-init');
+// require('microsoft-ajax');
+// require('sp-runtime');
+// require('sharepoint');
 sp_loader_1.SPComponentLoader.loadCss('https://samavangarde.sharepoint.com/sites/devjeff/Style%20Library/MIS.GlobalNavigation/css/MIS.GlobalNavigationModern.css');
 //SPComponentLoader.loadCss('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css');
 /** A Custom Action which can be run during execution of a Client Side Application */
@@ -107,42 +106,18 @@ var SpfxToastrApplicationCustomizer = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     SpfxToastrApplicationCustomizer.prototype.onInit = function () {
-        //Log.info(LOG_SOURCE, `Initialized v1.0.4 ${strings.Title}`);
-        sp_core_library_1.Log.info(LOG_SOURCE, "After changedEvent");
-        // Call render method for generating the HTML elements.
-        //this._renderPlaceHolders();
         // Added to handle possible changes on the existence of placeholders.
         this.context.placeholderProvider.changedEvent.add(this, this._renderPlaceHolders);
-        sp_core_library_1.Log.info(LOG_SOURCE, "After _renderPlaceHolders");
-        //Dialog.alert(`hello from SPFX`);
         return Promise.resolve();
     };
     SpfxToastrApplicationCustomizer.prototype.buildMegaMenu = function () {
-        //$('.ms-bgColor-themeDark').text("tete");
         $(document).ready(function () {
-            //alert("test");
+            //DO NOT REMOVE ! IT IS REQUIRED TO INIT JQUERY
         });
         var instanceMis = new MISMain_1.MISMain(this.context);
-        // const context: SP.ClientContext = new SP.ClientContext(this.context.pageContext.web.absoluteUrl);
-        // const web: SP.Web = context.get_web();
-        // context.load(web);
-        // context.executeQueryAsync(function name(sender, args) {
-        //   //this.webpartTitle = web.get_title();
-        //   //console.log(web.get_description());
-        //   // let siteContent: string = `<div>
-        //   //                            <h2>Title: ${web.get_title()}</h2>
-        //   //                            <span>Description: ${web.get_description()}<span>
-        //   //                          </div>`;
-        //   //htmlContext.domElement.querySelector("#siteContent").innerHTML =siteContent;
-        // },
-        //   function (sender, args) {
-        //     console.log(args.get_message());
-        //   });
     };
     SpfxToastrApplicationCustomizer.prototype._renderPlaceHolders = function () {
         var _this = this;
-        console.log('HelloWorldApplicationCustomizer._renderPlaceHolders()');
-        console.log('Available placeholders: ', this.context.placeholderProvider.placeholderNames.map(function (name) { return sp_application_base_1.PlaceholderName[name]; }).join(', '));
         // Handling the top placeholder
         if (!this._topPlaceholder) {
             this._topPlaceholder =
@@ -159,22 +134,16 @@ var SpfxToastrApplicationCustomizer = (function (_super) {
                 }
                 if (this._topPlaceholder.domElement) {
                     this._topPlaceholder.domElement.innerHTML = "<div id=\"MEGAMENU\" class=\"MEGAMENU\"></div>";
-                    // this._topPlaceholder.domElement.innerHTML = `
-                    // <div id="MEGAMENU" class="">
-                    //   <div class="ms-bgColor-themeDark ms-fontColor-white ">
-                    //     This is my place holder
-                    //     // <i class="ms-Icon ms-Icon--Info" aria-hidden="true"></i>
-                    //   </div>
-                    // </div>`;
                 }
             }
         }
         this._loadSPJSOMScripts().then(function () {
+            //debugger;
             _this.buildMegaMenu();
         });
     };
     SpfxToastrApplicationCustomizer.prototype._onDispose = function () {
-        console.log('[HelloWorldApplicationCustomizer._onDispose] Disposed custom top and bottom placeholders.');
+        //console.log('[HelloWorldApplicationCustomizer._onDispose] Disposed custom top and bottom placeholders.');
     };
     SpfxToastrApplicationCustomizer.prototype.getSiteCollectionUrl = function () {
         var baseUrl = window.location.protocol + "//" + window.location.host;
@@ -184,6 +153,48 @@ var SpfxToastrApplicationCustomizer = (function (_super) {
             baseUrl += pathname.substring(0, pathname.indexOf("/", siteCollectionDetector.length));
         }
         return baseUrl;
+    };
+    SpfxToastrApplicationCustomizer.prototype._loadSPJSOMScriptsEverything = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var siteColUrl = _this.getSiteCollectionUrl();
+            try {
+                sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/init.js', {
+                    globalExportsName: '$_global_init'
+                })
+                    .then(function () {
+                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/MicrosoftAjax.js', {
+                        globalExportsName: 'Sys'
+                    });
+                })
+                    .then(function () {
+                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.Runtime.js', {
+                        globalExportsName: 'SP'
+                    });
+                })
+                    .then(function () {
+                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.js', {
+                        globalExportsName: 'SP'
+                    });
+                })
+                    .then(function () {
+                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.taxonomy.js', {
+                        globalExportsName: 'SP'
+                    });
+                })
+                    .then(function () {
+                    //this.setState({ loadingScripts: false });
+                    resolve();
+                })
+                    .catch(function (reason) {
+                    resolve();
+                    //this.setState({ loadingScripts: false, errors: [...this.state.errors, reason] });
+                });
+            }
+            catch (error) {
+                //this.setState({ loadingScripts: false, errors: [...this.state.errors, error] });
+            }
+        });
     };
     SpfxToastrApplicationCustomizer.prototype._loadSPJSOMScripts = function () {
         var _this = this;
@@ -256,18 +267,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var MISGlobalNavigation_1 = __webpack_require__(6);
+var MISGlobalNavigation_1 = __webpack_require__(5);
 var MISMain = (function () {
     function MISMain(_spcontext) {
         this.spcontext = _spcontext;
@@ -285,9 +290,9 @@ var MISMain = (function () {
             //SP.SOD.executeOrDelayUntilScriptLoaded(MIS.SiteCollection.execute, "sp.ui.pub.ribbon.js");
         }
         catch (ex) {
-            //console.log("$(document).ready" + ex);
+            //////console.log("$(document).ready" + ex);
             if (typeof console === "object") {
-                console.log("$(document).ready" + ex);
+                ////console.log("$(document).ready" + ex);
             }
             else {
                 alert("$(document).ready" + ex);
@@ -296,8 +301,8 @@ var MISMain = (function () {
     }
     //public static init(spcontext: any, _termStoreName: any, _termStoreGUID: any) {
     MISMain.prototype.getMenuParameters = function () {
+        ////console.log("getMenuParameters called");
         var _this = this;
-        console.log("getMenuParameters called");
         try {
             this.loadSessionStorage;
             if (this.termStoreGUID == undefined && this.termStoreName == undefined) {
@@ -306,9 +311,9 @@ var MISMain = (function () {
                 //debugger
                 this.getSettingsData(url).then(function () {
                     //debugger
-                    console.log("then getSettingsData");
-                    console.log("isCentralresource value " + _this.isCentralResource);
-                    console.log("termStoreName value " + _this.termStoreName);
+                    ////console.log("then getSettingsData");
+                    ////console.log("isCentralresource value " + this.isCentralResource);
+                    ////console.log("termStoreName value " + this.termStoreName);
                     //Insert the menu in the top navigation
                     _this.insertMenu();
                     //if (this.isCentralResource == true && url != this.homeBtnUrl) {
@@ -319,7 +324,7 @@ var MISMain = (function () {
         }
         catch (e) {
             if (typeof console === "object") {
-                console.log("getMenuParameters function:" + e);
+                ////console.log("getMenuParameters function:" + e);
             }
         }
     };
@@ -330,11 +335,12 @@ var MISMain = (function () {
     MISMain.prototype.getSettingsData = function (url) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            console.log("gettingsData function called");
+            ////console.log("gettingsData function called");
             try {
                 var requestUri = url + "/_api/web/lists/getByTitle('GlobalNavigation')/Items?$filter=isActif eq 1";
-                console.log(requestUri);
+                ////console.log(requestUri);
                 // execute AJAX request synchrone
+                //debugger;
                 var thisGlobal_1 = _this;
                 //debugger
                 $.ajax({
@@ -345,13 +351,14 @@ var MISMain = (function () {
                     },
                     success: function (data) {
                         ////debugger
-                        console.log(data);
+                        ////console.log(data);
+                        //debugger;
                         //debugger
                         if (data.d.results.length > 0) {
                             thisGlobal_1.listGUID = data.d.results[0].ListGUID;
                             thisGlobal_1.navigationType = data.d.results[0].NavigationType;
                             thisGlobal_1.termStoreName = data.d.results[0].TermStoreName;
-                            console.log("1- set termstoreName with value " + data.d.results[0].TermStoreName);
+                            ////console.log("1- set termstoreName with value " + data.d.results[0].TermStoreName)
                             if (thisGlobal_1.termStoreName == null) {
                                 console.error("ERROR, the function getSettingsData did nto return the term store name from global nav list ! Did you deploy global nav list ?");
                             }
@@ -369,11 +376,14 @@ var MISMain = (function () {
                             sessionStorage.setItem("isCentralResource", thisGlobal_1.isCentralResource);
                             resolve();
                         }
+                        else {
+                            throw new Error("Cant read settings from global navigation list");
+                        }
                     },
                     error: function (err) {
                         //debugger
                         if (typeof console === "object") {
-                            console.log("getSettingsData - ajax :" + err);
+                            ////console.log("getSettingsData - ajax :" + err);
                         }
                         resolve();
                     }
@@ -381,9 +391,9 @@ var MISMain = (function () {
             }
             catch (e) {
                 if (typeof console === "object") {
-                    console.log("getSettingsData function:" + e);
+                    //console.log("getSettingsData function:" + e);
                 }
-                resolve();
+                reject();
             }
         });
     };
@@ -418,12 +428,12 @@ var MISMain = (function () {
         else {
             // Sorry! No Web Storage support..
             if (typeof console === "object") {
-                console.log("Sorry! No Web Storage support..");
+                ////console.log("Sorry! No Web Storage support..");
             }
         }
     };
     MISMain.prototype.insertMenu = function () {
-        console.log("insertMenu called");
+        ////console.log("insertMenu called");
         var siteUrl = "";
         if (this.isCentralResource == "true") {
             siteUrl = this.homeBtnUrl;
@@ -437,8 +447,8 @@ var MISMain = (function () {
                 //Load the CSS Style sheet file of the project
                 //$('head').append("<link rel='stylesheet' type='text/css' href='" + siteUrl + "/Style Library/MIS.GlobalNavigation/css/MIS.GlobalNavigation.css'> </link>");
                 //Load the Global Navigation
-                //debugger
-                var MISGlobalNavigationObject = new MISGlobalNavigation_1.MISGlobalNavigation();
+                //debugger;
+                var MISGlobalNavigationObject = new MISGlobalNavigation_1.MISGlobalNavigation(siteUrl);
                 MISGlobalNavigationObject.init(this.spcontext, this.termStoreName, this.termStoreGUID);
                 //init(termStoreName, termStoreGUID);//Global Navigation
                 break;
@@ -452,21 +462,28 @@ exports.MISMain = MISMain;
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-function createDelegate(instance, method) {
-    return function () {
-        return method.apply(instance, arguments);
+var HelperCSOM = (function () {
+    function HelperCSOM() {
+    }
+    HelperCSOM.createDelegate = function (instance, method) {
+        return function () {
+            return method.apply(instance, arguments);
+        };
     };
-}
+    return HelperCSOM;
+}());
+exports.HelperCSOM = HelperCSOM;
 var MISGlobalNavigation = (function () {
-    function MISGlobalNavigation() {
-        this.viewModelObj = new ViewModel();
-        sessionStorage.clear();
+    function MISGlobalNavigation(siteUrl) {
+        //debugger;
+        this.viewModelObj = new ViewModel(siteUrl);
+        //sessionStorage.clear();
     }
     /**
     * Create the HTML dom of the menu - Only 3 level of menu
@@ -475,7 +492,7 @@ var MISGlobalNavigation = (function () {
     * @param {int} nLevel - Level of the menu: 0, 1 or 2
     */
     MISGlobalNavigation.prototype.printTree = function (menuItem, nLevel) {
-        console.log("printTree()");
+        //console.log("printTree()");
         var nbChild = menuItem.children.length;
         switch (nLevel) {
             case 0://Top Level => Executive, Core Processes, Support or Social
@@ -515,7 +532,7 @@ var MISGlobalNavigation = (function () {
             case 2:// sub-sub Menu
                 this.viewModelObj.htmlStr += "<li>";
                 if (menuItem.url === undefined) {
-                    console.log("cas 2 display menuITem.name" + menuItem.name);
+                    //console.log("cas 2 display menuITem.name" + menuItem.name);
                     this.viewModelObj.htmlStr += menuItem.name;
                 }
                 else {
@@ -533,15 +550,16 @@ var MISGlobalNavigation = (function () {
     *
     */
     MISGlobalNavigation.prototype.buildTree = function () {
-        console.log("buildTree()");
+        //console.log("buildTree()");
         this.treeFromArray2(this.viewModelObj.globalMenuItems); //Load the treeNav
-        console.log("entries in globalMenuItems  " + this.viewModelObj.globalMenuItems.length);
+        //console.log("entries in globalMenuItems  " + this.viewModelObj.globalMenuItems.length)
         for (var i = 0; i < this.viewModelObj.treeNav.length; i++) {
             this.printTree(this.viewModelObj.treeNav[i], 0);
         }
         //Add the last separator in the menu
         this.viewModelObj.htmlStr += "<div class='separator-megamenu mis-hidden'></div>";
         //BackUp viewMenuModel in the sessionStorage
+        //debugger;
         var viewMenuModel_json = JSON.stringify(this.viewModelObj);
         sessionStorage.setItem("viewMenuModel", viewMenuModel_json);
     };
@@ -551,7 +569,7 @@ var MISGlobalNavigation = (function () {
     *
     */
     MISGlobalNavigation.prototype.treeFromArray = function (list, idAttr, parentAttr, childrenAttr) {
-        console.log("treeFromArray()");
+        //console.log("treeFromArray()");
         if (!idAttr)
             idAttr = '_id';
         if (!parentAttr)
@@ -580,7 +598,7 @@ var MISGlobalNavigation = (function () {
     };
     ;
     MISGlobalNavigation.prototype.treeFromArray2 = function (list) {
-        console.log("treeFromArray2()");
+        //console.log("treeFromArray2()");
         var idAttr = '_id';
         var parentAttr = 'sonOf';
         var childrenAttr = 'children';
@@ -612,7 +630,7 @@ var MISGlobalNavigation = (function () {
      * @return {obj} A sorted term tree
      */
     MISGlobalNavigation.prototype.sortTermsFromTree = function (tree) {
-        console.log("sortTermsFromTree()");
+        //console.log("sortTermsFromTree()");
         // Check to see if the get_customSortOrder function is defined. If the term is actually a term collection,
         // there is nothing to sort.
         if (tree.children.length && tree.customSortOrder) {
@@ -658,7 +676,7 @@ var MISGlobalNavigation = (function () {
     *
     */
     MISGlobalNavigation.prototype.displayMenu = function () {
-        console.log("displayMenu called");
+        //console.log("displayMenu called");
         ////var homeBtnTitle, homeBtnUrl, isCentralResource;
         if (!sessionStorage.viewMenuModel) {
             this.buildTree();
@@ -668,8 +686,9 @@ var MISGlobalNavigation = (function () {
         var menuInnerHtml = "<div id='nav-container'>" +
             this.viewModelObj.htmlStr +
             "</div>";
-        console.log(menuInnerHtml);
+        //console.log(menuInnerHtml);
         //Insert icon on the left of the SharePoint text (Top left corner) + all menu html
+        //debugger;
         $('#MEGAMENU').append(menuInnerHtml);
         this.applyNavigationEvent();
     };
@@ -701,6 +720,7 @@ var MISGlobalNavigation = (function () {
         //on hover menu level, show the menu, on hover off, hide the menu
         $("#nav-container").hover(function () {
             hiddenMenu.removeClass("mis-hidden");
+            $("#nav-container").css('cursor', 'pointer');
         }, function () {
             hiddenMenu.addClass("mis-hidden");
         });
@@ -730,6 +750,7 @@ var MISGlobalNavigation = (function () {
      *
      */
     MISGlobalNavigation.prototype.loadSessionStorage = function (spcontext) {
+        //debugger;
         if (typeof (Storage) !== "undefined") {
             // Code for localStorage/sessionStorage.
             if (sessionStorage.viewMenuModel) {
@@ -755,7 +776,7 @@ var MISGlobalNavigation = (function () {
         else {
             // Sorry! No Web Storage support..
             if (typeof console === "object") {
-                console.log("Sorry! No Web Storage support..");
+                //console.log("Sorry! No Web Storage support..");
             }
         }
     };
@@ -767,13 +788,13 @@ var MISGlobalNavigation = (function () {
      * @param {object} callback - Callback function to call upon completion and pass termset into
      */
     MISGlobalNavigation.prototype.init = function (spcontext, termStoreName, termSetId) {
-        var _this = this;
-        console.log("init called");
+        //console.log("init called");
         //Load sessionStorage
+        var _this = this;
         this.loadSessionStorage(spcontext);
         //Load all terms  if not already done.
         //if (!this.viewModelObj.globalMenuItems) {
-        console.log("no terms loading it");
+        //console.log("no terms loading it");
         this.buildTermsModel(spcontext, termStoreName, termSetId).then(function () {
             //to do rendre asynchrone
             //setTimeout(()=>{}, 2000);
@@ -782,7 +803,7 @@ var MISGlobalNavigation = (function () {
         //ko.applyBindings(this.viewModelObj);
         // SP.UI.Notify.removeNotification(nid);
         // }), Function.createDelegate(this, function (sender, args) {
-        //    console.log('The following error has occured while loading global navigation: ' + args.get_message());
+        //    //console.log('The following error has occured while loading global navigation: ' + args.get_message());
         //  }));
         // }));
         //  }, 'core.js');
@@ -809,7 +830,7 @@ var MISGlobalNavigation = (function () {
             var terms = termSet.getAllTerms();
             context.load(terms);
             //context.executeQueryAsync(function name(sender, args) {
-            context.executeQueryAsync(createDelegate(_this, function (sender, args) {
+            context.executeQueryAsync(HelperCSOM.createDelegate(_this, function (sender, args) {
                 var termsEnumerator = terms.getEnumerator();
                 resolve();
                 while (termsEnumerator.moveNext()) {
@@ -823,10 +844,10 @@ var MISGlobalNavigation = (function () {
                     termParentName, //currentTerm.get_localCustomProperties()['sonOf']//sonOf
                     currentTerm.get_id().toString(), //guid of the term
                     currentTerm.get_localCustomProperties()['description']));
-                    console.log("Push in globalMenuItems " + currentTerm.get_name());
+                    //console.log("Push in globalMenuItems " + currentTerm.get_name());
                     // }
                 }
-                console.log("GlobalMenuItems" + globalThis.viewModelObj.globalMenuItems.length);
+                //console.log("GlobalMenuItems" + globalThis.viewModelObj.globalMenuItems.length);
                 //Call the logical function to display the menu
             }));
         });
@@ -854,10 +875,11 @@ var MenuItem = (function () {
 }());
 exports.MenuItem = MenuItem;
 var ViewModel = (function () {
-    function ViewModel() {
+    function ViewModel(siteUrl) {
         this.htmlStr = "<ul id='mis-nav'>";
         this.globalMenuItems = new Array();
         this.treeNav = new Array();
+        this.siteUrl = siteUrl;
     }
     return ViewModel;
 }());
@@ -866,34 +888,10 @@ exports.ViewModel = ViewModel;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
 
 /***/ })
 /******/ ])});;

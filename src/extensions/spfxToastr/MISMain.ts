@@ -28,9 +28,9 @@ export class MISMain {
       this.getMenuParameters();
       //SP.SOD.executeOrDelayUntilScriptLoaded(MIS.SiteCollection.execute, "sp.ui.pub.ribbon.js");
     } catch (ex) {
-      //console.log("$(document).ready" + ex);
+      //////console.log("$(document).ready" + ex);
       if (typeof console === "object") {
-        console.log("$(document).ready" + ex);
+        ////console.log("$(document).ready" + ex);
       } else {
         alert("$(document).ready" + ex);
       }
@@ -39,7 +39,7 @@ export class MISMain {
 
   //public static init(spcontext: any, _termStoreName: any, _termStoreGUID: any) {
   private getMenuParameters(): void {
-    console.log("getMenuParameters called");
+    ////console.log("getMenuParameters called");
 
     try {
       this.loadSessionStorage;
@@ -49,9 +49,9 @@ export class MISMain {
         //debugger
         this.getSettingsData(url).then(() => {
           //debugger
-          console.log("then getSettingsData");
-          console.log("isCentralresource value " + this.isCentralResource);
-          console.log("termStoreName value " + this.termStoreName);
+          ////console.log("then getSettingsData");
+          ////console.log("isCentralresource value " + this.isCentralResource);
+          ////console.log("termStoreName value " + this.termStoreName);
 
           //Insert the menu in the top navigation
           this.insertMenu();
@@ -63,7 +63,7 @@ export class MISMain {
       }
     } catch (e) {
       if (typeof console === "object") {
-        console.log("getMenuParameters function:" + e);
+        ////console.log("getMenuParameters function:" + e);
       }
     }
   }
@@ -75,13 +75,13 @@ export class MISMain {
 
     return new Promise<void>((resolve, reject) => {
 
-      console.log("gettingsData function called");
+      ////console.log("gettingsData function called");
 
       try {
         var requestUri = url + "/_api/web/lists/getByTitle('GlobalNavigation')/Items?$filter=isActif eq 1";
-        console.log(requestUri);
+        ////console.log(requestUri);
         // execute AJAX request synchrone
-
+        //debugger;
         let thisGlobal = this;
         //debugger
         $.ajax({
@@ -92,18 +92,19 @@ export class MISMain {
           },
           success: function (data) {
             ////debugger
-            console.log(data);
-
+            ////console.log(data);
+            //debugger;
             //debugger
             if (data.d.results.length > 0) {
 
               thisGlobal.listGUID = data.d.results[0].ListGUID;
               thisGlobal.navigationType = data.d.results[0].NavigationType;
               thisGlobal.termStoreName = data.d.results[0].TermStoreName;
-              console.log("1- set termstoreName with value " + data.d.results[0].TermStoreName)
+              ////console.log("1- set termstoreName with value " + data.d.results[0].TermStoreName)
               if (thisGlobal.termStoreName == null) {
                 console.error("ERROR, the function getSettingsData did nto return the term store name from global nav list ! Did you deploy global nav list ?")
               }
+
               thisGlobal.termStoreGUID = data.d.results[0].TermStoreGUID;
               thisGlobal.homeBtnTitle = data.d.results[0].HomeBtnTitle;
               thisGlobal.homeBtnUrl = data.d.results[0].HomeBtnUrl;
@@ -117,21 +118,23 @@ export class MISMain {
               sessionStorage.setItem("homeBtnUrl", thisGlobal.homeBtnUrl);
               sessionStorage.setItem("isCentralResource", thisGlobal.isCentralResource);
               resolve();
+            }else {
+              throw new Error("Cant read settings from global navigation list");
             }
           },
           error: function (err) {
             //debugger
             if (typeof console === "object") {
-              console.log("getSettingsData - ajax :" + err);
+              ////console.log("getSettingsData - ajax :" + err);
             }
             resolve();
           }
         });
       } catch (e) {
         if (typeof console === "object") {
-          console.log("getSettingsData function:" + e);
+          //console.log("getSettingsData function:" + e);
         }
-        resolve();
+        reject();
       }
     });
   }
@@ -165,13 +168,13 @@ export class MISMain {
     } else {
       // Sorry! No Web Storage support..
       if (typeof console === "object") {
-        console.log("Sorry! No Web Storage support..");
+        ////console.log("Sorry! No Web Storage support..");
       }
     }
   }
 
   private insertMenu(): void {
-    console.log("insertMenu called");
+    ////console.log("insertMenu called");
     var siteUrl = "";
     if (this.isCentralResource == "true") {
       siteUrl = this.homeBtnUrl;
@@ -186,8 +189,8 @@ export class MISMain {
         //$('head').append("<link rel='stylesheet' type='text/css' href='" + siteUrl + "/Style Library/MIS.GlobalNavigation/css/MIS.GlobalNavigation.css'> </link>");
 
         //Load the Global Navigation
-        //debugger
-        let MISGlobalNavigationObject:MISGlobalNavigation = new MISGlobalNavigation();
+        //debugger;
+        let MISGlobalNavigationObject:MISGlobalNavigation = new MISGlobalNavigation(siteUrl);
         MISGlobalNavigationObject.init(this.spcontext, this.termStoreName, this.termStoreGUID);
         //init(termStoreName, termStoreGUID);//Global Navigation
         break;

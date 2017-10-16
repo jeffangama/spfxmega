@@ -1,3 +1,6 @@
+export declare class HelperCSOM {
+    static createDelegate(instance: any, method: any): any;
+}
 export declare class MISGlobalNavigation {
     /**
     * Global Variable of the Menu
@@ -9,7 +12,7 @@ export declare class MISGlobalNavigation {
     * @param {string} menuItem - represents a item of the menu (this.MenuItem)
     */
     viewModelObj: ViewModel;
-    constructor();
+    constructor(siteUrl: any);
     /**
     * Create the HTML dom of the menu - Only 3 level of menu
     *
@@ -88,5 +91,5 @@ export declare class ViewModel {
     isCentralResource: boolean;
     siteUrl: any;
     homeBtnTitle: any;
-    constructor();
+    constructor(siteUrl: any);
 }
