@@ -20,7 +20,8 @@ const LOG_SOURCE: string = 'SpfxToastrApplicationCustomizer';
 // require('sp-runtime');
 // require('sharepoint');
 
-SPComponentLoader.loadCss('https://samavangarde.sharepoint.com/sites/devjeff/Style%20Library/MIS.GlobalNavigation/css/MIS.GlobalNavigationModern.css')
+
+
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
  * it will be deserialized into the BaseExtension.properties object.
@@ -43,6 +44,10 @@ export default class SpfxToastrApplicationCustomizer
 
   @override
   public onInit(): Promise<void> {
+    //debugger;
+    //Load CSS
+    SPComponentLoader.loadCss(this.getSiteCollectionUrl() + "/Style%20Library/MIS.GlobalNavigation.Modern/css/MIS.GlobalNavigationModern.css")
+
     // Added to handle possible changes on the existence of placeholders.
     this.context.placeholderProvider.changedEvent.add(this, this._renderPlaceHolders);
 
@@ -102,48 +107,6 @@ export default class SpfxToastrApplicationCustomizer
       baseUrl += pathname.substring(0, pathname.indexOf("/", siteCollectionDetector.length));
     }
     return baseUrl;
-  }
-
-  private _loadSPJSOMScriptsEverything(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const siteColUrl = this.getSiteCollectionUrl();
-
-      try {
-        SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/init.js', {
-          globalExportsName: '$_global_init'
-        })
-          .then((): Promise<void> => {
-            return SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/MicrosoftAjax.js', {
-              globalExportsName: 'Sys'
-            });
-          })
-          .then((): Promise<void> => {
-            return SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.Runtime.js', {
-              globalExportsName: 'SP'
-            });
-          })
-          .then((): Promise<void> => {
-            return SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.js', {
-              globalExportsName: 'SP'
-            });
-          })
-          .then((): Promise<void> => {
-            return SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.taxonomy.js', {
-              globalExportsName: 'SP'
-            });
-          })
-          .then((): void => {
-            //this.setState({ loadingScripts: false });
-            resolve();
-          })
-          .catch((reason: any) => {
-            resolve();
-            //this.setState({ loadingScripts: false, errors: [...this.state.errors, reason] });
-          });
-      } catch (error) {
-        //this.setState({ loadingScripts: false, errors: [...this.state.errors, error] });
-      }
-    });
   }
 
   private _loadSPJSOMScripts(): Promise<void> {

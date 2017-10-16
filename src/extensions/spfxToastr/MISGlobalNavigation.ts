@@ -4,7 +4,6 @@ export class HelperCSOM {
       return method.apply(instance, arguments);
     }
   }
-
 }
 
 export class MISGlobalNavigation {

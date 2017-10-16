@@ -93,11 +93,6 @@ var sp_loader_1 = __webpack_require__(3);
 var MISMain_1 = __webpack_require__(4);
 var $ = __webpack_require__(6);
 var LOG_SOURCE = 'SpfxToastrApplicationCustomizer';
-// require('sp-init');
-// require('microsoft-ajax');
-// require('sp-runtime');
-// require('sharepoint');
-sp_loader_1.SPComponentLoader.loadCss('https://samavangarde.sharepoint.com/sites/devjeff/Style%20Library/MIS.GlobalNavigation/css/MIS.GlobalNavigationModern.css');
 //SPComponentLoader.loadCss('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css');
 /** A Custom Action which can be run during execution of a Client Side Application */
 var SpfxToastrApplicationCustomizer = (function (_super) {
@@ -106,6 +101,9 @@ var SpfxToastrApplicationCustomizer = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     SpfxToastrApplicationCustomizer.prototype.onInit = function () {
+        //debugger;
+        //Load CSS
+        sp_loader_1.SPComponentLoader.loadCss(this.getSiteCollectionUrl() + "/Style%20Library/MIS.GlobalNavigation.Modern/css/MIS.GlobalNavigationModern.css");
         // Added to handle possible changes on the existence of placeholders.
         this.context.placeholderProvider.changedEvent.add(this, this._renderPlaceHolders);
         return Promise.resolve();
@@ -153,48 +151,6 @@ var SpfxToastrApplicationCustomizer = (function (_super) {
             baseUrl += pathname.substring(0, pathname.indexOf("/", siteCollectionDetector.length));
         }
         return baseUrl;
-    };
-    SpfxToastrApplicationCustomizer.prototype._loadSPJSOMScriptsEverything = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var siteColUrl = _this.getSiteCollectionUrl();
-            try {
-                sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/init.js', {
-                    globalExportsName: '$_global_init'
-                })
-                    .then(function () {
-                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/MicrosoftAjax.js', {
-                        globalExportsName: 'Sys'
-                    });
-                })
-                    .then(function () {
-                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.Runtime.js', {
-                        globalExportsName: 'SP'
-                    });
-                })
-                    .then(function () {
-                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.js', {
-                        globalExportsName: 'SP'
-                    });
-                })
-                    .then(function () {
-                    return sp_loader_1.SPComponentLoader.loadScript(siteColUrl + '/_layouts/15/SP.taxonomy.js', {
-                        globalExportsName: 'SP'
-                    });
-                })
-                    .then(function () {
-                    //this.setState({ loadingScripts: false });
-                    resolve();
-                })
-                    .catch(function (reason) {
-                    resolve();
-                    //this.setState({ loadingScripts: false, errors: [...this.state.errors, reason] });
-                });
-            }
-            catch (error) {
-                //this.setState({ loadingScripts: false, errors: [...this.state.errors, error] });
-            }
-        });
     };
     SpfxToastrApplicationCustomizer.prototype._loadSPJSOMScripts = function () {
         var _this = this;

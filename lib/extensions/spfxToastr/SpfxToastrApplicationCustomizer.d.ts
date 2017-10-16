@@ -18,6 +18,5 @@ export default class SpfxToastrApplicationCustomizer extends BaseApplicationCust
     private _renderPlaceHolders();
     private _onDispose();
     getSiteCollectionUrl(): string;
-    private _loadSPJSOMScriptsEverything();
     private _loadSPJSOMScripts();
 }
