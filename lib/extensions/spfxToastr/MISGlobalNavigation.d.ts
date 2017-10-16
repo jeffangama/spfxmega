@@ -41,6 +41,7 @@ export declare class MISGlobalNavigation {
     */
     private displayMenu();
     private applyNavigationEvent();
+    private bindHoverMenu();
     /**
     * Return a string name of the term's parent and null if no parent
     *

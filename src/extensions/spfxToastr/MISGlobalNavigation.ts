@@ -35,19 +35,17 @@ export class MISGlobalNavigation {
   */
   private printTree(menuItem: MenuItem, nLevel) {
     console.log("printTree()");
-    this.viewModelObj.htmlStr += "<ul id='mis-nav' class='mis-hidden'>";
     var nbChild = menuItem.children.length;
-
 
     switch (nLevel) {
       case 0: //Top Level => Executive, Core Processes, Support or Social
-        this.viewModelObj.htmlStr += "<div class='separator-megamenu ms-hidden'></div>";
+        this.viewModelObj.htmlStr += "<div class='separator-megamenu mis-hidden'></div>";
         this.viewModelObj.htmlStr += "<div class='container-megamenu'>";
         //this.viewModelObj.htmlStr + "<a href='" + menuItem.url + "'>" + menuItem.name + "</a>";
         this.viewModelObj.htmlStr += "<p class='menu-level1'>" + menuItem.name;
         this.viewModelObj.htmlStr += "<img class='icon-level1' align='right' src='" + this.viewModelObj.siteUrl + "/Style Library/MIS.GlobalNavigation/images/icon-" + menuItem.name.replace(/[~#%&*:<>?/\{|}.]/g, "-") + ".png'></img>";
         this.viewModelObj.htmlStr += "</p>";
-        this.viewModelObj.htmlStr += "<ul class='subs ms-hidden' style='list-style: none;'>";
+        this.viewModelObj.htmlStr += "<ul class='subs mis-hidden' style='list-style: none;'>";
 
         for (var i = 0; i < nbChild; i++) {
           this.printTree(menuItem.children[i], nLevel + 1);
@@ -60,7 +58,7 @@ export class MISGlobalNavigation {
           this.viewModelObj.htmlStr += "<li><p class='menu-level2'>" + menuItem.name + "</p>";
         }
         else {
-          this.viewModelObj.htmlStr += "<li><a href='" + menuItem.url + "' class='mis-tooltip'>" +
+          this.viewModelObj.htmlStr += "<li><a href='" + menuItem.url + "'>" +
             menuItem.name +
             "<span>" +
             /*"<img class='callout' src='/Style Library/MIS.GlobalNavigation/images/callout.gif' />" +
@@ -106,8 +104,7 @@ export class MISGlobalNavigation {
       this.printTree(this.viewModelObj.treeNav[i], 0);
     }
     //Add the last separator in the menu
-    this.viewModelObj.htmlStr += "<div class='separator-megamenu ms-hidden'></div>";
-
+    this.viewModelObj.htmlStr += "<div class='separator-megamenu mis-hidden'></div>";
 
     //BackUp viewMenuModel in the sessionStorage
     var viewMenuModel_json = JSON.stringify(this.viewModelObj);
@@ -255,13 +252,17 @@ export class MISGlobalNavigation {
 
   //Event on the Menu
   private applyNavigationEvent() {
+
+    this.bindHoverMenu();
+
+
     //Apply event on the menu
     //#homeBtn:hover  #nav-container
-    $("#MEGAMENU").on('click', function () {
-      $("#MEGAMENU").toggleClass("mis-on");
-      $('#nav-container').toggleClass("mis-on");
-      //$("nav ul").toggleClass('mis-hidden');
-    });
+    // $("#MEGAMENU").on('click', function () {
+    //   $("#MEGAMENU").toggleClass("mis-on");
+    //   $('#nav-container').toggleClass("mis-on");
+    //   //$("nav ul").toggleClass('mis-hidden');
+    // });
 
     $("#MEGAMENU img")
       .mouseover(function () {
@@ -274,6 +275,18 @@ export class MISGlobalNavigation {
       });
 
   };
+
+  private bindHoverMenu() {
+    //get every hidden menus
+    var hiddenMenu = $('.mis-hidden');
+
+    //on hover menu level, show the menu, on hover off, hide the menu
+    $("#nav-container").hover(function () {
+      hiddenMenu.removeClass("mis-hidden");
+    }, function () {
+      hiddenMenu.addClass("mis-hidden");
+    });
+  }
 
   /**
   * Return a string name of the term's parent and null if no parent
@@ -448,7 +461,7 @@ export class ViewModel {
   public homeBtnTitle: any;
 
   constructor() {
-    this.htmlStr = "";
+    this.htmlStr = "<ul id='mis-nav'>";
     this.globalMenuItems = new Array<any>();
     this.treeNav = new Array<any>();
   }

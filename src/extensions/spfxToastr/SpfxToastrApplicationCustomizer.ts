@@ -121,7 +121,7 @@ export default class SpfxToastrApplicationCustomizer
         }
 
         if (this._topPlaceholder.domElement) {
-          this._topPlaceholder.domElement.innerHTML = `<div id="MEGAMENU" class=""></div>`;
+          this._topPlaceholder.domElement.innerHTML = `<div id="MEGAMENU" class="MEGAMENU"></div>`;
 
           // this._topPlaceholder.domElement.innerHTML = `
           // <div id="MEGAMENU" class="">

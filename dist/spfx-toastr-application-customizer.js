@@ -158,7 +158,7 @@ var SpfxToastrApplicationCustomizer = (function (_super) {
                     topString = '(Top property was not defined.)';
                 }
                 if (this._topPlaceholder.domElement) {
-                    this._topPlaceholder.domElement.innerHTML = "<div id=\"MEGAMENU\" class=\"\"></div>";
+                    this._topPlaceholder.domElement.innerHTML = "<div id=\"MEGAMENU\" class=\"MEGAMENU\"></div>";
                     // this._topPlaceholder.domElement.innerHTML = `
                     // <div id="MEGAMENU" class="">
                     //   <div class="ms-bgColor-themeDark ms-fontColor-white ">
@@ -476,17 +476,16 @@ var MISGlobalNavigation = (function () {
     */
     MISGlobalNavigation.prototype.printTree = function (menuItem, nLevel) {
         console.log("printTree()");
-        this.viewModelObj.htmlStr += "<ul id='mis-nav' class='mis-hidden'>";
         var nbChild = menuItem.children.length;
         switch (nLevel) {
             case 0://Top Level => Executive, Core Processes, Support or Social
-                this.viewModelObj.htmlStr += "<div class='separator-megamenu ms-hidden'></div>";
+                this.viewModelObj.htmlStr += "<div class='separator-megamenu mis-hidden'></div>";
                 this.viewModelObj.htmlStr += "<div class='container-megamenu'>";
                 //this.viewModelObj.htmlStr + "<a href='" + menuItem.url + "'>" + menuItem.name + "</a>";
                 this.viewModelObj.htmlStr += "<p class='menu-level1'>" + menuItem.name;
                 this.viewModelObj.htmlStr += "<img class='icon-level1' align='right' src='" + this.viewModelObj.siteUrl + "/Style Library/MIS.GlobalNavigation/images/icon-" + menuItem.name.replace(/[~#%&*:<>?/\{|}.]/g, "-") + ".png'></img>";
                 this.viewModelObj.htmlStr += "</p>";
-                this.viewModelObj.htmlStr += "<ul class='subs ms-hidden' style='list-style: none;'>";
+                this.viewModelObj.htmlStr += "<ul class='subs mis-hidden' style='list-style: none;'>";
                 for (var i = 0; i < nbChild; i++) {
                     this.printTree(menuItem.children[i], nLevel + 1);
                 }
@@ -498,7 +497,7 @@ var MISGlobalNavigation = (function () {
                     this.viewModelObj.htmlStr += "<li><p class='menu-level2'>" + menuItem.name + "</p>";
                 }
                 else {
-                    this.viewModelObj.htmlStr += "<li><a href='" + menuItem.url + "' class='mis-tooltip'>" +
+                    this.viewModelObj.htmlStr += "<li><a href='" + menuItem.url + "'>" +
                         menuItem.name +
                         "<span>" +
                         /*"<img class='callout' src='/Style Library/MIS.GlobalNavigation/images/callout.gif' />" +
@@ -541,7 +540,7 @@ var MISGlobalNavigation = (function () {
             this.printTree(this.viewModelObj.treeNav[i], 0);
         }
         //Add the last separator in the menu
-        this.viewModelObj.htmlStr += "<div class='separator-megamenu ms-hidden'></div>";
+        this.viewModelObj.htmlStr += "<div class='separator-megamenu mis-hidden'></div>";
         //BackUp viewMenuModel in the sessionStorage
         var viewMenuModel_json = JSON.stringify(this.viewModelObj);
         sessionStorage.setItem("viewMenuModel", viewMenuModel_json);
@@ -677,13 +676,14 @@ var MISGlobalNavigation = (function () {
     ;
     //Event on the Menu
     MISGlobalNavigation.prototype.applyNavigationEvent = function () {
+        this.bindHoverMenu();
         //Apply event on the menu
         //#homeBtn:hover  #nav-container
-        $("#MEGAMENU").on('click', function () {
-            $("#MEGAMENU").toggleClass("mis-on");
-            $('#nav-container').toggleClass("mis-on");
-            //$("nav ul").toggleClass('mis-hidden');
-        });
+        // $("#MEGAMENU").on('click', function () {
+        //   $("#MEGAMENU").toggleClass("mis-on");
+        //   $('#nav-container').toggleClass("mis-on");
+        //   //$("nav ul").toggleClass('mis-hidden');
+        // });
         $("#MEGAMENU img")
             .mouseover(function () {
             var src = $(this).attr("src").replace("menu.png", "menuover.png");
@@ -695,6 +695,16 @@ var MISGlobalNavigation = (function () {
         });
     };
     ;
+    MISGlobalNavigation.prototype.bindHoverMenu = function () {
+        //get every hidden menus
+        var hiddenMenu = $('.mis-hidden');
+        //on hover menu level, show the menu, on hover off, hide the menu
+        $("#nav-container").hover(function () {
+            hiddenMenu.removeClass("mis-hidden");
+        }, function () {
+            hiddenMenu.addClass("mis-hidden");
+        });
+    };
     /**
     * Return a string name of the term's parent and null if no parent
     *
@@ -845,7 +855,7 @@ var MenuItem = (function () {
 exports.MenuItem = MenuItem;
 var ViewModel = (function () {
     function ViewModel() {
-        this.htmlStr = "";
+        this.htmlStr = "<ul id='mis-nav'>";
         this.globalMenuItems = new Array();
         this.treeNav = new Array();
     }
