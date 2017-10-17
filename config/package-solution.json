@@ -1,10 +1,22 @@
 {
   "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "jquery-application-toastr-client-side-solution",
+    "name": "MEGA Menu MIS",
     "id": "461c7ee8-3ab9-47ee-b52d-44c77087d9e8",
-    "version": "1.0.0.3",
-    "skipFeatureDeployment": false,
+    "version": "1.0.0.5",
+    "features": [
+      {
+        "title": "Application Extension - Deployment of custom action.",
+        "description": "Deploys a custom action with ClientSideComponentId association",
+        "id": "4678966b-de68-445f-a74e-e553a7b937ab",
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": [
+            "elements.xml"
+          ]
+        }
+      }
+    ],
     "iconPath": "AppIcon.png"
   },
   "paths": {
