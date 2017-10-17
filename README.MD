@@ -14,4 +14,8 @@ How to deploy to tenant :
   a. file in temp deploy
   b. css
 
-  In console, type sessionStorage.clear() to refresh the menu
+  2. deploy the megamenu.wsp (that create the list)
+  3. Configure the list, change the termstore name and specify term set ID
+
+  4. Create the app
+  5. Go to a modern page, In console, type sessionStorage.clear() to refresh the menu
