@@ -20,7 +20,7 @@ export class MISMain {
     this.termStoreName = null;
     this.homeBtnTitle = null;
     this.homeBtnUrl = null;
-    this.isCentralResource = null;///commm shall go to rouquet
+    this.isCentralResource = null;///commm shall go to rouquet 2 sss
 
     try {
       //Contain the webapp where mysites is configured
