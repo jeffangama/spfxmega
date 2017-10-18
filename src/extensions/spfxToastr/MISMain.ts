@@ -15,7 +15,7 @@ export class MISMain {
   constructor(_spcontext: any) {
     this.spcontext = _spcontext;
     this.listGUID = null;
-    this.navigationType = null;
+    this.navigationType = null; //
     this.termStoreGUID = null;
     this.termStoreName = null;
     this.homeBtnTitle = null;
